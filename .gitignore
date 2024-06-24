@@ -1,0 +1,7 @@
+# Ignore environment settings
+settings.json
+
+# Node modules and other common files to ignore
+node_modules/
+.meteor/local/
+.DS_Store
