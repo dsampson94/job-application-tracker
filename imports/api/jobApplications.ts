@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
-import { User } from '../types/User'; // Ensure you have this import
+import { User } from '../types/User';
 
 export const JobApplications = new Mongo.Collection<JobApplication>('jobApplications');
 
@@ -11,9 +11,10 @@ export interface JobApplication {
     status: string;
     userId: string;
     createdAt: Date;
-    jobSpecName?: string;
-    jobSpecUrl?: string;
-    cvName?: string;
+    jobSpec?: string;
+    jobSpecName?: string; // Storing Job Spec name
+    cvName?: string; // Storing CV name instead of base64 string
+    tags?: string[]; // Storing tags
 }
 
 Meteor.methods({

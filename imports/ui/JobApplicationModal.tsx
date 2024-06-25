@@ -26,18 +26,21 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
     const [role, setRole] = useState(jobApplication?.role || '');
     const [company, setCompany] = useState(jobApplication?.company || '');
     const [status, setStatus] = useState(jobApplication?.status || '');
-    const [jobSpecName, setJobSpecName] = useState<string | null>(jobApplication?.jobSpecName || null);
-    const [jobSpecUrl, setJobSpecUrl] = useState<string | null>(jobApplication?.jobSpecUrl || null);
+    const [jobSpec, setJobSpec] = useState<string | null>(jobApplication?.jobSpec || null);
+    const [jobSpecName, setJobSpecName] = useState<string | null>(jobApplication?.jobSpecName || '');
     const [cvName, setCvName] = useState<string | null>(jobApplication?.cvName || (cvs.length > 0 ? cvs[0].name : null));
+    const [tags, setTags] = useState<string[]>(jobApplication?.tags || []);
+    const [newTag, setNewTag] = useState<string>('');
 
     useEffect(() => {
         if (jobApplication) {
             setRole(jobApplication.role || '');
             setCompany(jobApplication.company || '');
             setStatus(jobApplication.status || '');
-            setJobSpecName(jobApplication.jobSpecName || null);
-            setJobSpecUrl(jobApplication.jobSpecUrl || null);
+            setJobSpec(jobApplication.jobSpec || null);
+            setJobSpecName(jobApplication.jobSpecName || '');
             setCvName(jobApplication.cvName || null);
+            setTags(jobApplication.tags || []);
         }
     }, [jobApplication]);
 
@@ -54,9 +57,21 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
         }
     };
 
+    const handleAddTag = () => {
+        if (newTag.trim() !== '') {
+            setTags([...tags, newTag.trim()]);
+            setNewTag('');
+        }
+    };
+
+    const handleRemoveTag = (tag: string) => {
+        setTags(tags.filter(t => t !== tag));
+    };
+
     const handleSubmit = () => {
+        const updates = { role, company, status, jobSpec, jobSpecName, cvName, tags };
         if (jobApplication) {
-            Meteor.call('jobApplications.update', jobApplication._id, { role, company, status, jobSpecName, jobSpecUrl, cvName }, (err: Meteor.Error) => {
+            Meteor.call('jobApplications.update', jobApplication._id, updates, (err: Meteor.Error) => {
                 if (err) {
                     toast.error(`Failed to update job application: ${err.message}`);
                 } else {
@@ -65,7 +80,7 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
                 }
             });
         } else {
-            Meteor.call('jobApplications.insert', { role, company, status, jobSpecName, jobSpecUrl, cvName }, (err: Meteor.Error) => {
+            Meteor.call('jobApplications.insert', updates, (err: Meteor.Error) => {
                 if (err) {
                     toast.error(`Failed to create job application: ${err.message}`);
                 } else {
@@ -85,16 +100,16 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
                     <h2 className="text-2xl mb-4">{jobApplication ? 'Update Job Application' : 'Create Job Application'}</h2>
                     <input
                         type="text"
-                        value={company}
-                        onChange={(e) => setCompany(e.target.value)}
-                        placeholder="Company"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        placeholder="Role"
                         className="mb-2 p-2 border border-gray-300 rounded w-full"
                     />
                     <input
                         type="text"
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                        placeholder="Role"
+                        value={company}
+                        onChange={(e) => setCompany(e.target.value)}
+                        placeholder="Company"
                         className="mb-2 p-2 border border-gray-300 rounded w-full"
                     />
                     <select
@@ -119,9 +134,45 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
                     <label className="block mb-2">Job Spec:</label>
                     <input
                         type="file"
-                        onChange={(e) => handleFileUpload(e, setJobSpecUrl, setJobSpecName)}
+                        onChange={(e) => handleFileUpload(e, setJobSpec, setJobSpecName)}
                         className="mb-4 p-2 border border-gray-300 rounded w-full"
                     />
+                    <input
+                        type="text"
+                        value={jobSpecName || ''}
+                        onChange={(e) => setJobSpecName(e.target.value)}
+                        placeholder="Job Spec Name"
+                        className="mb-2 p-2 border border-gray-300 rounded w-full"
+                    />
+                    <div className="mb-4">
+                        <label className="block mb-2">Tags:</label>
+                        <div className="flex flex-wrap mb-2">
+                            {tags.map(tag => (
+                                <div key={tag} className="bg-blue-100 text-blue-800 rounded-full px-3 py-1 mr-2 mb-2 flex items-center">
+                                    <span>{tag}</span>
+                                    <button
+                                        onClick={() => handleRemoveTag(tag)}
+                                        className="ml-2 text-red-500"
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        <input
+                            type="text"
+                            value={newTag}
+                            onChange={(e) => setNewTag(e.target.value)}
+                            placeholder="New Tag"
+                            className="mb-2 p-2 border border-gray-300 rounded w-full"
+                        />
+                        <button
+                            onClick={handleAddTag}
+                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                        >
+                            Add Tag
+                        </button>
+                    </div>
                     <div className="flex justify-end">
                         <button onClick={onClose} className="bg-gray-500 text-white px-4 py-2 rounded mr-2">
                             Cancel
@@ -131,12 +182,12 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
                         </button>
                     </div>
                 </div>
-                <div className="col-span-1 flex flex-col space-y-4">
-                    {jobSpecUrl && (
+                <div className="col-span-1 flex flex-col space-y-4 ">
+                    {jobSpec && (
                         <div>
-                            <h3 className="mb-2">Job Spec: {jobSpecName}</h3>
+                            <h3 className="mb-2">Job Spec:</h3>
                             <iframe
-                                src={jobSpecUrl}
+                                src={jobSpec}
                                 title="Job Spec Preview"
                                 className="w-full h-64 mb-4 border border-gray-300"
                             />
@@ -144,7 +195,7 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
                     )}
                     {selectedCV && (
                         <div>
-                            <h3 className="mb-2">Selected CV: {selectedCV.name}</h3>
+                            <h3 className="mb-2">Selected CV:</h3>
                             <iframe
                                 src={`${selectedCV.url}`}
                                 title="CV Preview"
