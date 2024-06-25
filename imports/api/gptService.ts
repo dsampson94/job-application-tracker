@@ -17,14 +17,8 @@ Meteor.methods({
         }
     },
 
-    async getInsights(specBase64: string, userId: string, type: string): Promise<string | null> {
-        const user = Meteor.users.findOne(userId);
-        if (!user || !user.profile || !user.profile.cvUrl) {
-            throw new Meteor.Error('user-not-found', 'User or CV URL not found');
-        }
-
-        const cvBase64 = user.profile.cvUrl;
-        const specText = await callWithPromise<string>('extractTextFromPDF', specBase64);
+    async getInsights(jobSpecBase64: string, cvBase64: string, type: string): Promise<string | null> {
+        const specText = await callWithPromise<string>('extractTextFromPDF', jobSpecBase64);
         const cvText = await callWithPromise<string>('extractTextFromPDF', cvBase64);
 
         let userPrompt = '';

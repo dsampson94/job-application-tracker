@@ -19,11 +19,17 @@ const InsightsModal: React.FC<InsightsModalProps> = ({ jobApplication, onClose }
     const user: User | null = useTracker(() => Meteor.user() as User | null);
 
     const fetchInsights = async (type: string) => {
-        if (jobApplication && jobApplication.jobSpecUrl && jobApplication.cvName) {
+        if (jobApplication && jobApplication.jobSpec && jobApplication.cvName && user) {
             setLoading(true);
             try {
                 const userId = Meteor.userId();
-                const result = await callWithPromise<string>('getInsights', jobApplication.jobSpecUrl, userId, type);
+                const cv = user.profile?.cvs?.find(cv => cv.name === jobApplication.cvName);
+
+                if (!cv) {
+                    throw new Error('CV not found in user profile');
+                }
+
+                const result = await callWithPromise<string>('getInsights', jobApplication.jobSpec, cv.url, type);
                 setLoading(false);
                 setInsights(result);
             } catch (error) {
@@ -73,7 +79,7 @@ const InsightsModal: React.FC<InsightsModalProps> = ({ jobApplication, onClose }
                                         loop={false}
                                         cursor
                                         cursorStyle="_"
-                                        typeSpeed={50}
+                                        typeSpeed={100}
                                         deleteSpeed={0}
                                         delaySpeed={1000}
                                     />
