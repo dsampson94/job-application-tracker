@@ -1,26 +1,41 @@
 import React, { useState } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
+import { useHistory } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLogin, setIsLogin] = useState(true);
+    const history = useHistory();
 
     const handleSignup = () => {
         Accounts.createUser({ email, password }, (err) => {
-            if (err) alert(err.message);
+            if (err) {
+                toast.error(err.message);
+            } else {
+                toast.success("Account created successfully!");
+                history.push('/applications');
+            }
         });
     };
 
     const handleLogin = () => {
         Meteor.loginWithPassword(email, password, (err) => {
-            if (err) alert(err.message);
+            if (err) {
+                toast.error(err.message);
+            } else {
+                toast.success("Logged in successfully!");
+                history.push('/applications');
+            }
         });
     };
 
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
+            <ToastContainer />
             <h1 className="text-4xl font-bold mb-8">Job Application Tracker</h1>
             <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
                 <h2 className="text-2xl mb-4">{isLogin ? 'Login' : 'Sign Up'}</h2>

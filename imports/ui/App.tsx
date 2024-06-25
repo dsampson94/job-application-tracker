@@ -15,7 +15,7 @@ const App: React.FC = () => {
         <Router>
             <Switch>
                 <Route exact path="/">
-                    {user ? <Redirect to="/applications" /> : <Login />}
+                    {<Login />}
                 </Route>
                 <Route path="/profile">
                     {user ? <Profile /> : <Redirect to="/" />}
