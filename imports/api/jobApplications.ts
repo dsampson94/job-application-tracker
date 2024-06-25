@@ -1,6 +1,5 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
-import { User } from '../types/User';
 import MethodThisType = Meteor.MethodThisType;
 
 export const JobApplications = new Mongo.Collection<JobApplication>('jobApplications');
