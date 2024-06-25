@@ -1,5 +1,6 @@
 # Ignore environment settings
 settings.json
+.idea
 
 # Node modules and other common files to ignore
 node_modules/
