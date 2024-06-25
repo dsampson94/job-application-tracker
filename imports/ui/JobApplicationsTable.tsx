@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
-import Layout from './Layout';
 import { JobApplications, JobApplication } from '../api/jobApplications';
-import JobApplicationModal from './JobApplicationModal';
 import InsightsModal from './InsightsModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { toast } from 'react-toastify';
 
-const JobApplicationsTable: React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
+interface JobApplicationsTableProps {
+    onOpenModal: (jobApplication: JobApplication | null) => void;
+}
+
+const JobApplicationsTable: React.FC<JobApplicationsTableProps> = ({ onOpenModal }) => {
     const [selectedJobApplication, setSelectedJobApplication] = useState<JobApplication | null>(null);
     const [isInsightsModalOpen, setIsInsightsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -38,11 +39,6 @@ const JobApplicationsTable: React.FC = () => {
         }
     };
 
-    const handleOpenModal = (jobApplication: JobApplication | null) => {
-        setSelectedJobApplication(jobApplication);
-        setIsModalOpen(true);
-    };
-
     const handleOpenInsightsModal = (jobApplication: JobApplication | null) => {
         setSelectedJobApplication(jobApplication);
         setIsInsightsModalOpen(true);
@@ -59,17 +55,8 @@ const JobApplicationsTable: React.FC = () => {
     };
 
     return (
-        <Layout>
+        <div>
             <div className="text-center">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-4xl font-bold pb-2">Job Applications</h1>
-                    <button
-                        onClick={() => handleOpenModal(null)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
-                    >
-                        Create New
-                    </button>
-                </div>
                 <div className="overflow-auto max-h-[80vh]">
                     <table className="min-w-full bg-white">
                         <thead className="sticky top-0 bg-white">
@@ -132,7 +119,7 @@ const JobApplicationsTable: React.FC = () => {
                                             Insights
                                         </button>
                                         <button
-                                            onClick={() => handleOpenModal(jobApplication)}
+                                            onClick={() => onOpenModal(jobApplication)}
                                             className="bg-yellow-500 text-white px-4 py-2 rounded"
                                         >
                                             View
@@ -151,12 +138,6 @@ const JobApplicationsTable: React.FC = () => {
                     </table>
                 </div>
             </div>
-            {isModalOpen && (
-                <JobApplicationModal
-                    jobApplication={selectedJobApplication}
-                    onClose={() => setIsModalOpen(false)}
-                />
-            )}
             {isInsightsModalOpen && (
                 <InsightsModal
                     jobApplication={selectedJobApplication}
@@ -169,7 +150,7 @@ const JobApplicationsTable: React.FC = () => {
                     onCancel={() => setIsDeleteModalOpen(false)}
                 />
             )}
-        </Layout>
+        </div>
     );
 };
 

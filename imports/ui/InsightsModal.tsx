@@ -45,7 +45,7 @@ const InsightsModal: React.FC<InsightsModalProps> = ({ jobApplication, onClose }
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-10">
             <div className="bg-white p-8 rounded shadow-md w-3/4 h-3/4 overflow-hidden flex flex-col">
                 <div className="flex justify-between mb-4">
                     <div className="text-left">

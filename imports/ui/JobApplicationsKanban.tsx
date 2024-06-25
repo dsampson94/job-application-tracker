@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { JobApplications, JobApplication } from '../api/jobApplications';
-import JobApplicationModal from './JobApplicationModal';
 import InsightsModal from './InsightsModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,12 +8,15 @@ import { faMagic, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
 
-const JobApplicationsKanban: React.FC = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedJobApplication, setSelectedJobApplication] = useState<JobApplication | null>(null);
+interface JobApplicationsKanbanProps {
+    onOpenModal: (jobApplication: JobApplication | null) => void;
+}
+
+const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenModal }) => {
     const [isInsightsModalOpen, setIsInsightsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [jobToDelete, setJobToDelete] = useState<JobApplication | null>(null);
+    const [selectedJobApplication, setSelectedJobApplication] = useState<JobApplication | null>(null);
 
     const { jobApplications, isLoading } = useTracker(() => {
         const handle = Meteor.subscribe('jobApplications');
@@ -36,11 +38,6 @@ const JobApplicationsKanban: React.FC = () => {
                 setJobToDelete(null);
             });
         }
-    };
-
-    const handleOpenModal = (jobApplication: JobApplication | null) => {
-        setSelectedJobApplication(jobApplication);
-        setIsModalOpen(true);
     };
 
     const handleOpenInsightsModal = (jobApplication: JobApplication | null) => {
@@ -122,7 +119,7 @@ const JobApplicationsKanban: React.FC = () => {
                                                                             <FontAwesomeIcon icon={faMagic} />
                                                                         </button>
                                                                         <button
-                                                                            onClick={() => handleOpenModal(job)}
+                                                                            onClick={() => onOpenModal(job)}
                                                                             className="bg-yellow-500 text-white w-8 h-8 p-1 rounded-full flex items-center justify-center"
                                                                         >
                                                                             <FontAwesomeIcon icon={faEye} />
@@ -158,12 +155,6 @@ const JobApplicationsKanban: React.FC = () => {
                     </div>
                 </DragDropContext>
             </div>
-            {isModalOpen && (
-                <JobApplicationModal
-                    jobApplication={selectedJobApplication}
-                    onClose={() => setIsModalOpen(false)}
-                />
-            )}
             {isInsightsModalOpen && (
                 <InsightsModal
                     jobApplication={selectedJobApplication}

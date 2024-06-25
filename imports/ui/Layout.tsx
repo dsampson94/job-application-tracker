@@ -26,11 +26,6 @@ const Layout: React.FC = ({ children }) => {
                                 My Profile
                             </Link>
                         </li>
-                        <li className="mb-4">
-                            <Link to="/job-applications" className={getLinkClasses('/job-applications')}>
-                                Job Applications
-                            </Link>
-                        </li>
                     </ul>
                 </nav>
                 <div className="p-4">

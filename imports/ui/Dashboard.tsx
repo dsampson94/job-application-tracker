@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import Layout from './Layout';
+import JobApplicationsTable from './JobApplicationsTable';
 import JobApplicationsKanban from './JobApplicationsKanban';
 import DataControlModal from './DataControlModal';
+import JobApplicationModal from './JobApplicationModal';
+import { JobApplication } from '../api/jobApplications';
 
 const Dashboard: React.FC = () => {
     const [isDataControlModalOpen, setIsDataControlModalOpen] = useState(false);
+    const [viewMode, setViewMode] = useState<'table' | 'kanban'>('table');
+    const [isJobApplicationModalOpen, setIsJobApplicationModalOpen] = useState(false);
+    const [selectedJobApplication, setSelectedJobApplication] = useState<JobApplication | null>(null);
+
+    const handleOpenModal = (jobApplication: JobApplication | null) => {
+        setSelectedJobApplication(jobApplication);
+        setIsJobApplicationModalOpen(true);
+    };
 
     return (
         <Layout>
@@ -18,16 +29,31 @@ const Dashboard: React.FC = () => {
                         Data Control
                     </button>
                     <button
-                        onClick={() => {/* logic to open the job application modal */}}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={() => handleOpenModal(null)}
+                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
                     >
                         Create New
                     </button>
+                    <button
+                        onClick={() => setViewMode(viewMode === 'table' ? 'kanban' : 'table')}
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                    >
+                        {viewMode === 'table' ? 'Switch to Kanban' : 'Switch to Table'}
+                    </button>
                 </div>
             </div>
-            <JobApplicationsKanban />
+            {viewMode === 'table' ?
+                <JobApplicationsTable onOpenModal={handleOpenModal} /> :
+                <JobApplicationsKanban onOpenModal={handleOpenModal} />
+            }
             {isDataControlModalOpen && (
                 <DataControlModal onClose={() => setIsDataControlModalOpen(false)} />
+            )}
+            {isJobApplicationModalOpen && (
+                <JobApplicationModal
+                    jobApplication={selectedJobApplication}
+                    onClose={() => setIsJobApplicationModalOpen(false)}
+                />
             )}
         </Layout>
     );
