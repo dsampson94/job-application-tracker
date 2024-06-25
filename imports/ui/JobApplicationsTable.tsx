@@ -15,7 +15,7 @@ const JobApplicationsTable: React.FC<JobApplicationsTableProps> = ({ onOpenModal
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [jobToDelete, setJobToDelete] = useState<JobApplication | null>(null);
 
-    const { jobApplications, user, isLoading } = useTracker(() => {
+    const { jobApplications, user } = useTracker(() => {
         const handle = Meteor.subscribe('jobApplications');
         const userHandle = Meteor.subscribe('userCVs');
         return {

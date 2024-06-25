@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { JobApplications, JobApplication } from '../api/jobApplications';
 import InsightsModal from './InsightsModal';
@@ -18,10 +18,11 @@ const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenMod
     const [jobToDelete, setJobToDelete] = useState<JobApplication | null>(null);
     const [selectedJobApplication, setSelectedJobApplication] = useState<JobApplication | null>(null);
 
-    const { jobApplications, isLoading } = useTracker(() => {
+    const { jobApplications } = useTracker(() => {
         const handle = Meteor.subscribe('jobApplications');
+        const jobApplications = JobApplications.find().fetch();
         return {
-            jobApplications: JobApplications.find().fetch(),
+            jobApplications,
             isLoading: !handle.ready(),
         };
     });
@@ -68,6 +69,7 @@ const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenMod
     };
 
     const columns = [
+        { title: 'Not Applied', status: 'Not Applied' },
         { title: 'Applied', status: 'Applied' },
         { title: 'Interviewing', status: 'Interviewing' },
         { title: 'Offered', status: 'Offered' },
@@ -110,7 +112,9 @@ const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenMod
                                                                 <div className="flex justify-between items-center mb-2">
                                                                     <div className="text-left">
                                                                         <div className="font-bold text-lg">
-                                                                            {job.company} {job.isFavorite && <FontAwesomeIcon icon={faStar} className="text-yellow-500" />}
+                                                                            {job.company} {job.isFavorite &&
+                                                                            <FontAwesomeIcon icon={faStar}
+                                                                                             className="text-yellow-500" />}
                                                                         </div>
                                                                         <div className="text-gray-600">{job.role}</div>
                                                                     </div>

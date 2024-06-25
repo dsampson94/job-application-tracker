@@ -13,6 +13,7 @@ interface JobApplicationModalProps {
 
 const statusOptions = [
     { value: '', label: 'Select Status' },
+    { value: 'Not Applied', label: 'Not Applied' },
     { value: 'Applied', label: 'Applied' },
     { value: 'Interviewing', label: 'Interviewing' },
     { value: 'Offered', label: 'Offered' },
@@ -25,7 +26,7 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
 
     const [role, setRole] = useState(jobApplication?.role || '');
     const [company, setCompany] = useState(jobApplication?.company || '');
-    const [status, setStatus] = useState(jobApplication?.status || '');
+    const [status, setStatus] = useState(jobApplication?.status || 'Not Applied');
     const [jobSpec, setJobSpec] = useState<string | null>(jobApplication?.jobSpec || null);
     const [jobSpecName, setJobSpecName] = useState<string | null>(jobApplication?.jobSpecName || '');
     const [cvName, setCvName] = useState<string | null>(jobApplication?.cvName || (cvs.length > 0 ? cvs[0].name : null));
@@ -36,7 +37,7 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
         if (jobApplication) {
             setRole(jobApplication.role || '');
             setCompany(jobApplication.company || '');
-            setStatus(jobApplication.status || '');
+            setStatus(jobApplication.status || 'Not Applied');
             setJobSpec(jobApplication.jobSpec || null);
             setJobSpecName(jobApplication.jobSpecName || '');
             setCvName(jobApplication.cvName || null);

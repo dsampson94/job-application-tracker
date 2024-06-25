@@ -3,7 +3,7 @@ import { fetch } from 'meteor/fetch';
 import pdf from 'pdf-parse';
 import { callWithPromise } from '../utils/promisify';
 
-const OPENAI_API_KEY = Meteor.settings?.private?.OPENAI_API_KEY;
+const OPENAI_API_KEY = Meteor.settings.private.OPENAI_API_KEY;
 
 Meteor.methods({
     async extractTextFromPDF(base64: string): Promise<string> {
