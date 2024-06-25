@@ -35,7 +35,7 @@ const DataControlModal: React.FC<DataControlModalProps> = ({ onClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-10">
             <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
                 <h2 className="text-2xl mb-4">Data Control</h2>
                 <button

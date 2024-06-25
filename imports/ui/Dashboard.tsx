@@ -8,7 +8,7 @@ import { JobApplication } from '../api/jobApplications';
 
 const Dashboard: React.FC = () => {
     const [isDataControlModalOpen, setIsDataControlModalOpen] = useState(false);
-    const [viewMode, setViewMode] = useState<'table' | 'kanban'>('table');
+    const [viewMode, setViewMode] = useState<'table' | 'kanban'>('kanban');
     const [isJobApplicationModalOpen, setIsJobApplicationModalOpen] = useState(false);
     const [selectedJobApplication, setSelectedJobApplication] = useState<JobApplication | null>(null);
 

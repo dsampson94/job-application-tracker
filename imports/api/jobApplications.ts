@@ -11,10 +11,19 @@ export interface JobApplication {
     status: string;
     userId: string;
     createdAt: Date;
+    updatedAt: Date;
+    appliedAt: Date;
+    interviewDate?: Date;
+    offerDate?: Date;
+    unsuccessfulDate?: Date;
     jobSpec?: string;
-    jobSpecName?: string; // Storing Job Spec name
-    cvName?: string; // Storing CV name instead of base64 string
-    tags?: string[]; // Storing tags
+    jobSpecName?: string;
+    cvName?: string;
+    tags?: string[];
+    mockInterviewResponses?: string[];
+    suitabilityResponses?: string[];
+    tipsResponses?: string[];
+    isFavorite?: boolean;
 }
 
 Meteor.methods({
@@ -27,6 +36,8 @@ Meteor.methods({
             ...jobApplication,
             userId: this.userId,
             createdAt: new Date(),
+            updatedAt: new Date(),
+            appliedAt: new Date(),
         };
 
         JobApplications.insert(newJobApplication);
@@ -39,7 +50,7 @@ Meteor.methods({
 
         JobApplications.update(
             { _id: jobApplicationId, userId: this.userId as string },
-            { $set: updates }
+            { $set: { ...updates, updatedAt: new Date() } }
         );
     },
 
@@ -62,10 +73,16 @@ Meteor.methods({
             status: 'Applied',
             userId: this.userId,
             createdAt: new Date(),
+            updatedAt: new Date(),
+            appliedAt: new Date(),
             jobSpec: '',
             jobSpecName: `Mock Job Spec ${i + 1}`,
             cvName: `Mock CV ${i + 1}`,
             tags: ['mock', 'test', 'application'],
+            mockInterviewResponses: [],
+            suitabilityResponses: [],
+            tipsResponses: [],
+            isFavorite: false,
         }));
 
         mockApplications.forEach(application => JobApplications.insert(application));
