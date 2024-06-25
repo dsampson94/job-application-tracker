@@ -63,8 +63,8 @@ const Profile: React.FC = () => {
 
     return (
         <Layout>
-            <div className="container flex flex-col h-[90vh]">
-                <h1 className="text-4xl font-bold pb-4">My Profile</h1>
+            <div className="mb-8">
+                <h1 className="text-4xl font-bold mb-4">My Profile</h1>
                 <div className="bg-white p-2 rounded w-full flex flex-1 flex-wrap overflow-hidden">
                     <div className="w-full lg:w-1/3 flex flex-col">
                         <input

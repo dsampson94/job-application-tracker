@@ -4,9 +4,10 @@ import { useTracker } from 'meteor/react-meteor-data';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './Login';
-import Dashboard from './Dashboard';
+import JobApplicationsDashboard from './JobApplicationsDashboard';
 import JobApplicationsTable from './JobApplicationsTable';
 import Profile from './Profile';
+import Metrics from './Metrics';
 
 const App: React.FC = () => {
     const user = useTracker(() => Meteor.user());
@@ -14,9 +15,10 @@ const App: React.FC = () => {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Login />} />
-                <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
+                <Route path="/" element={user ? <Navigate to="/applications" /> : <Login />} />
                 <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" />} />
+                <Route path="/applications" element={user ? <JobApplicationsDashboard /> : <Navigate to="/" />} />
+                <Route path="/metrics" element={user ? <Metrics /> : <Navigate to="/" />} />
             </Routes>
             <ToastContainer />
         </Router>

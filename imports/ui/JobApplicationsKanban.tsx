@@ -4,7 +4,7 @@ import { JobApplications, JobApplication } from '../api/jobApplications';
 import InsightsModal from './InsightsModal';
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagic, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faMagic, faEye, faTrash, faStar } from '@fortawesome/free-solid-svg-icons';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import { toast } from 'react-toastify';
 
@@ -71,7 +71,7 @@ const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenMod
         { title: 'Applied', status: 'Applied' },
         { title: 'Interviewing', status: 'Interviewing' },
         { title: 'Offered', status: 'Offered' },
-        { title: 'Rejected', status: 'Rejected' },
+        { title: 'Unsuccessful', status: 'Unsuccessful' },
     ];
 
     return (
@@ -93,6 +93,7 @@ const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenMod
                                         <div className="p-4 space-y-4">
                                             {jobApplications
                                                 .filter((job) => job.status === column.status)
+                                                .sort((a, b) => Number(b.isFavorite) - Number(a.isFavorite)) // Sort favorites to the top
                                                 .map((job, index) => (
                                                     <Draggable
                                                         key={job._id}
@@ -108,7 +109,9 @@ const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenMod
                                                             >
                                                                 <div className="flex justify-between items-center mb-2">
                                                                     <div className="text-left">
-                                                                        <div className="font-bold text-lg">{job.company}</div>
+                                                                        <div className="font-bold text-lg">
+                                                                            {job.company} {job.isFavorite && <FontAwesomeIcon icon={faStar} className="text-yellow-500" />}
+                                                                        </div>
                                                                         <div className="text-gray-600">{job.role}</div>
                                                                     </div>
                                                                     <div className="flex space-x-2">
@@ -132,7 +135,7 @@ const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenMod
                                                                         </button>
                                                                     </div>
                                                                 </div>
-                                                                <div className="mt-2 flex flex-wrap space-x-2 space-y-2">
+                                                                <div className="mt-2 flex flex-wrap gap-2">
                                                                     {job.tags?.map((tag) => (
                                                                         <span
                                                                             key={tag}

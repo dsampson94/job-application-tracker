@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { User } from '../types/User';
+import MethodThisType = Meteor.MethodThisType;
 
 export const JobApplications = new Mongo.Collection<JobApplication>('jobApplications');
 
@@ -25,6 +26,13 @@ export interface JobApplication {
     tipsResponses?: string[];
     isFavorite?: boolean;
 }
+
+const getRandomTags = () => {
+    const possibleTags = ['Hybrid', 'Remote', 'On-site', 'Full-time', 'Part-time', 'Internship', 'Contract', 'Competitive', 'Flexible Hours', 'Competitive'];
+    const tagCount = Math.floor(Math.random() * 3) + 1; // 1 to 3 tags
+    const shuffledTags = possibleTags.sort(() => 0.5 - Math.random());
+    return shuffledTags.slice(0, tagCount);
+};
 
 Meteor.methods({
     'jobApplications.insert'(this: Meteor.MethodThisType, jobApplication: Omit<JobApplication, '_id'>) {
@@ -67,23 +75,59 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized');
         }
 
-        const mockApplications: Omit<JobApplication, '_id'>[] = Array.from({ length: 50 }, (_, i) => ({
-            role: `Mock Role ${i + 1}`,
-            company: `Mock Company ${i + 1}`,
-            status: 'Applied',
-            userId: this.userId,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            appliedAt: new Date(),
-            jobSpec: '',
-            jobSpecName: `Mock Job Spec ${i + 1}`,
-            cvName: `Mock CV ${i + 1}`,
-            tags: ['mock', 'test', 'application'],
-            mockInterviewResponses: [],
-            suitabilityResponses: [],
-            tipsResponses: [],
-            isFavorite: false,
-        }));
+        const statuses = ['Applied', 'Interviewing', 'Offered', 'Unsuccessful'];
+        const roles = ['Software Engineer', 'Full Stack Developer', 'React Developer', 'Tech Lead'];
+        const companies = ['Mock Company 1', 'Mock Company 2', 'Mock Company 3', 'Mock Company 4', 'Mock Company 5'];
+
+        const mockApplications: {
+            suitabilityResponses: any[];
+            role: string;
+            interviewDate: Date | undefined;
+            jobSpecName: string;
+            mockInterviewResponses: any[];
+            unsuccessfulDate: Date | undefined;
+            userId: (this: MethodThisType, ...args: any[]) => any;
+            cvName: string;
+            tags: string[];
+            createdAt: Date;
+            jobSpec: string;
+            offerDate: Date | undefined;
+            company: string;
+            appliedAt: Date;
+            status: string;
+            updatedAt: Date;
+            tipsResponses: any[];
+            isFavorite: boolean
+        }[] = Array.from({ length: 50 }, (_, i) => {
+            const role = roles[Math.floor(Math.random() * roles.length)];
+            const company = companies[Math.floor(Math.random() * companies.length)];
+            const status = statuses[Math.floor(Math.random() * statuses.length)];
+            const appliedAt = new Date(new Date().setDate(new Date().getDate() - Math.floor(Math.random() * 30)));
+            const interviewDate = status === 'Interviewing' ? new Date(new Date().setDate(appliedAt.getDate() + Math.floor(Math.random() * 7 + 1))) : undefined;
+            const offerDate = status === 'Offered' ? new Date(new Date().setDate(interviewDate ? interviewDate.getDate() + Math.floor(Math.random() * 7 + 1) : appliedAt.getDate() + Math.floor(Math.random() * 7 + 1))) : undefined;
+            const unsuccessfulDate = status === 'Unsuccessful' ? new Date(new Date().setDate(interviewDate ? interviewDate.getDate() + Math.floor(Math.random() * 7 + 1) : appliedAt.getDate() + Math.floor(Math.random() * 7 + 1))) : undefined;
+
+            return {
+                role,
+                company,
+                status,
+                userId: this.userId,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                appliedAt,
+                interviewDate,
+                offerDate,
+                unsuccessfulDate,
+                jobSpec: '',
+                jobSpecName: `${role} Job Spec ${i + 1}`,
+                cvName: `${role} CV ${i + 1}`,
+                tags: getRandomTags(),
+                mockInterviewResponses: [],
+                suitabilityResponses: [],
+                tipsResponses: [],
+                isFavorite: Math.random() < 0.5,
+            };
+        });
 
         mockApplications.forEach(application => JobApplications.insert(application));
     },
@@ -93,7 +137,7 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized');
         }
 
-        JobApplications.remove({ userId: this.userId as string, role: { $regex: '^Mock Role' } });
+        JobApplications.remove({ userId: this.userId as string });
     }
 });
 

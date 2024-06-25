@@ -12,18 +12,23 @@ const Layout: React.FC = ({ children }) => {
 
     return (
         <div className="flex min-h-screen">
-            <aside className="w-64 bg-gray-800 text-white flex flex-col">
+            <aside className="max-w-64 w-64 min-w-64 bg-gray-800 text-white flex flex-col">
                 <div className="p-4 text-2xl font-bold">InterviewAce</div>
                 <nav className="flex-grow p-4">
                     <ul>
                         <li className="mb-4">
-                            <Link to="/dashboard" className={getLinkClasses('/dashboard')}>
-                                Dashboard
+                            <Link to="/profile" className={getLinkClasses('/profile')}>
+                                My Profile
                             </Link>
                         </li>
                         <li className="mb-4">
-                            <Link to="/profile" className={getLinkClasses('/profile')}>
-                                My Profile
+                            <Link to="/applications" className={getLinkClasses('/dashboard')}>
+                                Applications
+                            </Link>
+                        </li>
+                        <li className="mb-4">
+                            <Link to="/metrics" className="text-white block py-2 px-4 hover:bg-gray-700">
+                                Metrics
                             </Link>
                         </li>
                     </ul>

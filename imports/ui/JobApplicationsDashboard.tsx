@@ -6,7 +6,7 @@ import DataControlModal from './DataControlModal';
 import JobApplicationModal from './JobApplicationModal';
 import { JobApplication } from '../api/jobApplications';
 
-const Dashboard: React.FC = () => {
+const JobApplicationsDashboard: React.FC = () => {
     const [isDataControlModalOpen, setIsDataControlModalOpen] = useState(false);
     const [viewMode, setViewMode] = useState<'table' | 'kanban'>('kanban');
     const [isJobApplicationModalOpen, setIsJobApplicationModalOpen] = useState(false);
@@ -19,8 +19,8 @@ const Dashboard: React.FC = () => {
 
     return (
         <Layout>
-            <div className="flex justify-between items-center mb-8">
-                <h1 className="text-4xl font-bold pb-2">Job Applications</h1>
+            <div className="flex justify-between items-center">
+                <h1 className="text-4xl font-bold mb-4">Job Applications</h1>
                 <div>
                     <button
                         onClick={() => setIsDataControlModalOpen(true)}
@@ -59,4 +59,4 @@ const Dashboard: React.FC = () => {
     );
 };
 
-export default Dashboard;
+export default JobApplicationsDashboard;
