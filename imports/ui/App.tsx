@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 import { useTracker } from 'meteor/react-meteor-data';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,12 +13,20 @@ const App: React.FC = () => {
 
     return (
         <Router>
-            <Routes>
-                <Route path="/" element={user ? <Navigate to="/applications" /> : <Login />} />
-                <Route path="/profile" element={user ? <Profile /> : <Navigate to="/" />} />
-                <Route path="/applications" element={user ? <JobApplicationsDashboard /> : <Navigate to="/" />} />
-                <Route path="/metrics" element={user ? <Metrics /> : <Navigate to="/" />} />
-            </Routes>
+            <Switch>
+                <Route exact path="/">
+                    {user ? <Redirect to="/applications" /> : <Login />}
+                </Route>
+                <Route path="/profile">
+                    {user ? <Profile /> : <Redirect to="/" />}
+                </Route>
+                <Route path="/applications">
+                    {user ? <JobApplicationsDashboard /> : <Redirect to="/" />}
+                </Route>
+                <Route path="/metrics">
+                    {user ? <Metrics /> : <Redirect to="/" />}
+                </Route>
+            </Switch>
             <ToastContainer />
         </Router>
     );
