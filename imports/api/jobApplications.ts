@@ -49,6 +49,34 @@ Meteor.methods({
         }
 
         JobApplications.remove({ _id: jobApplicationId, userId: this.userId as string });
+    },
+
+    'jobApplications.insertMockData'() {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        const mockApplications: Omit<JobApplication, '_id'>[] = Array.from({ length: 50 }, (_, i) => ({
+            role: `Mock Role ${i + 1}`,
+            company: `Mock Company ${i + 1}`,
+            status: 'Applied',
+            userId: this.userId,
+            createdAt: new Date(),
+            jobSpec: '',
+            jobSpecName: `Mock Job Spec ${i + 1}`,
+            cvName: `Mock CV ${i + 1}`,
+            tags: ['mock', 'test', 'application'],
+        }));
+
+        mockApplications.forEach(application => JobApplications.insert(application));
+    },
+
+    'jobApplications.clearMockData'() {
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized');
+        }
+
+        JobApplications.remove({ userId: this.userId as string, role: { $regex: '^Mock Role' } });
     }
 });
 

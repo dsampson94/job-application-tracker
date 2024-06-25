@@ -7,7 +7,7 @@ interface DeleteConfirmationModalProps {
 
 const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ onConfirm, onCancel }) => {
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75">
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-10">
             <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
                 <h2 className="text-2xl mb-4">Confirm Delete</h2>
                 <p className="mb-4">Are you sure you want to delete this job application?</p>

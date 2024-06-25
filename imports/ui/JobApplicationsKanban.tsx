@@ -7,6 +7,7 @@ import DeleteConfirmationModal from './DeleteConfirmationModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagic, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+import { toast } from 'react-toastify';
 
 const JobApplicationsKanban: React.FC = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -25,9 +26,15 @@ const JobApplicationsKanban: React.FC = () => {
 
     const handleRemove = () => {
         if (jobToDelete) {
-            Meteor.call('jobApplications.remove', jobToDelete._id);
-            setIsDeleteModalOpen(false);
-            setJobToDelete(null);
+            Meteor.call('jobApplications.remove', jobToDelete._id, (error: any) => {
+                if (error) {
+                    toast.error(`Failed to delete job application: ${error.message}`);
+                } else {
+                    toast.success('Job application deleted successfully');
+                }
+                setIsDeleteModalOpen(false);
+                setJobToDelete(null);
+            });
         }
     };
 
@@ -53,7 +60,13 @@ const JobApplicationsKanban: React.FC = () => {
 
         const draggedJob = jobApplications.find((job) => job._id === draggableId);
         if (draggedJob) {
-            Meteor.call('jobApplications.update', draggedJob._id, { status: destination.droppableId });
+            Meteor.call('jobApplications.update', draggedJob._id, { status: destination.droppableId }, (error: any) => {
+                if (error) {
+                    toast.error(`Failed to update job application: ${error.message}`);
+                } else {
+                    toast.success('Job application updated successfully');
+                }
+            });
         }
     };
 
@@ -64,89 +77,80 @@ const JobApplicationsKanban: React.FC = () => {
         { title: 'Rejected', status: 'Rejected' },
     ];
 
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
     return (
-        <div>
+        <div className="max-h-[80vh] overflow-hidden">
             <div className="text-center">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-4xl font-bold pb-2">Job Applications</h1>
-                    <button
-                        onClick={() => handleOpenModal(null)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
-                    >
-                        Create New
-                    </button>
-                </div>
                 <DragDropContext onDragEnd={handleDragEnd}>
-                    <div className="flex space-x-4 overflow-x-auto">
+                    <div className="flex space-x-4 overflow-x-auto py-4">
                         {columns.map((column) => (
                             <Droppable droppableId={column.status} key={column.status}>
                                 {(provided) => (
                                     <div
                                         {...provided.droppableProps}
                                         ref={provided.innerRef}
-                                        className="bg-gray-200 rounded-lg p-4 flex-1 min-w-[250px]"
+                                        className="bg-gray-200 rounded-lg flex-1 min-w-[250px] max-h-[80vh] overflow-auto"
                                     >
-                                        <h2 className="text-xl font-bold mb-4">{column.title}</h2>
-                                        {jobApplications
-                                            .filter((job) => job.status === column.status)
-                                            .map((job, index) => (
-                                                <Draggable
-                                                    key={job._id}
-                                                    draggableId={job._id!}
-                                                    index={index}
-                                                >
-                                                    {(provided) => (
-                                                        <div
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            className="bg-white rounded-lg p-4 mb-4 shadow relative"
-                                                        >
-                                                            <div className="flex justify-between items-center">
-                                                                <div className="text-left">
-                                                                    <div className="font-bold text-lg">{job.company}</div>
-                                                                    <div>{job.role}</div>
+                                        <div className="sticky top-0 bg-gray-200 z-10 p-4 border-b border-gray-300">
+                                            <h2 className="text-xl font-bold mb-2">{column.title}</h2>
+                                        </div>
+                                        <div className="p-4 space-y-4">
+                                            {jobApplications
+                                                .filter((job) => job.status === column.status)
+                                                .map((job, index) => (
+                                                    <Draggable
+                                                        key={job._id}
+                                                        draggableId={job._id!}
+                                                        index={index}
+                                                    >
+                                                        {(provided) => (
+                                                            <div
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                className="bg-white rounded-lg p-4 mb-4 shadow-md hover:shadow-lg transition-shadow duration-300"
+                                                            >
+                                                                <div className="flex justify-between items-center mb-2">
+                                                                    <div className="text-left">
+                                                                        <div className="font-bold text-lg">{job.company}</div>
+                                                                        <div className="text-gray-600">{job.role}</div>
+                                                                    </div>
+                                                                    <div className="flex space-x-2">
+                                                                        <button
+                                                                            onClick={() => handleOpenInsightsModal(job)}
+                                                                            className="bg-green-500 text-white w-8 h-8 p-1 rounded-full flex items-center justify-center"
+                                                                        >
+                                                                            <FontAwesomeIcon icon={faMagic} />
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => handleOpenModal(job)}
+                                                                            className="bg-yellow-500 text-white w-8 h-8 p-1 rounded-full flex items-center justify-center"
+                                                                        >
+                                                                            <FontAwesomeIcon icon={faEye} />
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => handleOpenDeleteModal(job)}
+                                                                            className="bg-red-500 text-white w-8 h-8 p-1 rounded-full flex items-center justify-center"
+                                                                        >
+                                                                            <FontAwesomeIcon icon={faTrash} />
+                                                                        </button>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="flex space-x-1">
-                                                                    <button
-                                                                        onClick={() => handleOpenInsightsModal(job)}
-                                                                        className="bg-green-500 text-white w-8 p-1 rounded-full"
-                                                                    >
-                                                                        <FontAwesomeIcon icon={faMagic} />
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={() => handleOpenModal(job)}
-                                                                        className="bg-yellow-500 text-white w-8 p-1 rounded-full"
-                                                                    >
-                                                                        <FontAwesomeIcon icon={faEye} />
-                                                                    </button>
-                                                                    <button
-                                                                        onClick={() => handleOpenDeleteModal(job)}
-                                                                        className="bg-red-500 text-white w-8 p-1 rounded-full"
-                                                                    >
-                                                                        <FontAwesomeIcon icon={faTrash} />
-                                                                    </button>
+                                                                <div className="mt-2 flex flex-wrap space-x-2 space-y-2">
+                                                                    {job.tags?.map((tag) => (
+                                                                        <span
+                                                                            key={tag}
+                                                                            className="bg-blue-100 text-blue-800 rounded-full px-3 py-1"
+                                                                        >
+                                                                            {tag}
+                                                                        </span>
+                                                                    ))}
                                                                 </div>
                                                             </div>
-                                                            <div className="mt-2 flex flex-wrap">
-                                                                {job.tags?.map((tag) => (
-                                                                    <span
-                                                                        key={tag}
-                                                                        className="bg-blue-100 text-blue-800 rounded-full px-3 py-1 mr-2 mb-2"
-                                                                    >
-                                                                        {tag}
-                                                                    </span>
-                                                                ))}
-                                                            </div>
-                                                        </div>
-                                                    )}
-                                                </Draggable>
-                                            ))}
-                                        {provided.placeholder}
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                            {provided.placeholder}
+                                        </div>
                                     </div>
                                 )}
                             </Droppable>
