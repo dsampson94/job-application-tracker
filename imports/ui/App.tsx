@@ -5,7 +5,6 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Login from './Login';
 import JobApplicationsDashboard from './JobApplicationsDashboard';
-import JobApplicationsTable from './JobApplicationsTable';
 import Profile from './Profile';
 import Metrics from './Metrics';
 
