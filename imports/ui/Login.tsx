@@ -55,7 +55,7 @@ const Login: React.FC = () => {
                 />
                 <button
                     onClick={isLogin ? handleLogin : handleSignup}
-                    className="bg-blue-500 text-white px-4 py-2 rounded w-full border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500"
+                    className="bg-blue-500 text-white px-4 py-2 rounded w-full border-2 border-transparent hover:bg-blue-600 hover:border-blue-600 active:bg-transparent active:text-blue-500 active:border-blue-500"
                 >
                     {isLogin ? 'Login' : 'Sign Up'}
                 </button>

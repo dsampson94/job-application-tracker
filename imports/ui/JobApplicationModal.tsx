@@ -169,16 +169,16 @@ const JobApplicationModal: React.FC<JobApplicationModalProps> = ({ jobApplicatio
                         />
                         <button
                             onClick={handleAddTag}
-                            className="bg-blue-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500"
+                            className="bg-blue-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-blue-600 hover:border-blue-600 active:bg-transparent active:text-blue-500 active:border-blue-500"
                         >
                             Add Tag
                         </button>
                     </div>
                     <div className="flex justify-end">
-                        <button onClick={onClose} className="bg-gray-500 text-white px-4 py-2 rounded mr-2 border-2 border-transparent hover:bg-gray-400 hover:border-gray-400 active:bg-transparent active:text-gray-500 active:border-gray-500">
+                        <button onClick={onClose} className="bg-gray-500 text-white px-4 py-2 rounded mr-2 border-2 border-transparent hover:bg-gray-600 hover:border-gray-600 active:bg-transparent active:text-gray-500 active:border-gray-500">
                             Cancel
                         </button>
-                        <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500">
+                        <button onClick={handleSubmit} className="bg-blue-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-blue-600 hover:border-blue-600 active:bg-transparent active:text-blue-500 active:border-blue-500">
                             {jobApplication ? 'Update' : 'Create'}
                         </button>
                     </div>
