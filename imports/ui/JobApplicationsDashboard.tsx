@@ -24,19 +24,19 @@ const JobApplicationsDashboard: React.FC = () => {
                 <div>
                     <button
                         onClick={() => setIsDataControlModalOpen(true)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2 border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500"
                     >
                         Data Control
                     </button>
                     <button
                         onClick={() => handleOpenModal(null)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2 border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500"
                     >
                         Create New
                     </button>
                     <button
                         onClick={() => setViewMode(viewMode === 'table' ? 'kanban' : 'table')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        className="bg-blue-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500"
                     >
                         {viewMode === 'table' ? 'Switch to Kanban' : 'Switch to Table'}
                     </button>

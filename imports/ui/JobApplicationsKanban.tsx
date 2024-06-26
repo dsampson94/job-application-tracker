@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTracker } from 'meteor/react-meteor-data';
 import { JobApplications, JobApplication } from '../api/jobApplications';
 import InsightsModal from './InsightsModal';
@@ -112,28 +112,31 @@ const JobApplicationsKanban: React.FC<JobApplicationsKanbanProps> = ({ onOpenMod
                                                                 <div className="flex justify-between items-center mb-2">
                                                                     <div className="text-left">
                                                                         <div className="font-bold text-lg">
-                                                                            {job.company} {job.isFavorite &&
-                                                                            <FontAwesomeIcon icon={faStar}
-                                                                                             className="text-yellow-500" />}
+                                                                            {job.company} {job.isFavorite && (
+                                                                            <FontAwesomeIcon
+                                                                                icon={faStar}
+                                                                                className="text-yellow-500"
+                                                                            />
+                                                                        )}
                                                                         </div>
                                                                         <div className="text-gray-600">{job.role}</div>
                                                                     </div>
                                                                     <div className="flex space-x-2">
                                                                         <button
                                                                             onClick={() => handleOpenInsightsModal(job)}
-                                                                            className="bg-green-500 text-white w-8 h-8 p-1 rounded-full flex items-center justify-center"
+                                                                            className="text-white w-8 h-8 p-1 rounded-full flex items-center justify-center bg-green-500 hover:bg-green-600 hover:border-green-600 border-2 border-transparent active:bg-transparent active:text-green-500 active:border-green-500"
                                                                         >
                                                                             <FontAwesomeIcon icon={faMagic} />
                                                                         </button>
                                                                         <button
                                                                             onClick={() => onOpenModal(job)}
-                                                                            className="bg-yellow-500 text-white w-8 h-8 p-1 rounded-full flex items-center justify-center"
+                                                                            className="text-white w-8 h-8 p-1 rounded-full flex items-center justify-center bg-yellow-500 hover:bg-yellow-600 hover:border-yellow-600 border-2 border-transparent active:bg-transparent active:text-yellow-500 active:border-yellow-500"
                                                                         >
                                                                             <FontAwesomeIcon icon={faEye} />
                                                                         </button>
                                                                         <button
                                                                             onClick={() => handleOpenDeleteModal(job)}
-                                                                            className="bg-red-500 text-white w-8 h-8 p-1 rounded-full flex items-center justify-center"
+                                                                            className="text-white w-8 h-8 p-1 rounded-full flex items-center justify-center bg-red-500 hover:bg-red-600 hover:border-red-600 border-2 border-transparent active:bg-transparent active:text-red-500 active:border-red-500"
                                                                         >
                                                                             <FontAwesomeIcon icon={faTrash} />
                                                                         </button>

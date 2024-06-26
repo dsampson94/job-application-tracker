@@ -89,12 +89,16 @@ const Profile: React.FC = () => {
                             className="mb-4 p-2 border border-gray-300 rounded w-full"
                         />
                         <div className="flex justify-between items-center w-full">
-                            <button onClick={handleAddCV}
-                                    className="bg-blue-500 text-white px-4 py-2 rounded mb-4 w-1/2 mr-2">
+                            <button
+                                onClick={handleAddCV}
+                                className="bg-blue-500 text-white px-4 py-2 rounded mb-4 w-1/2 mr-2 border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500"
+                            >
                                 Add CV
                             </button>
-                            <button onClick={handleSubmit}
-                                    className="bg-blue-500 text-white px-4 py-2 rounded mb-4 w-1/2 ml-2">
+                            <button
+                                onClick={handleSubmit}
+                                className="bg-blue-500 text-white px-4 py-2 rounded mb-4 w-1/2 ml-2 border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500"
+                            >
                                 Update Profile
                             </button>
                         </div>
@@ -108,7 +112,7 @@ const Profile: React.FC = () => {
                                             <span className="text-blue-500">{cv.name}</span>
                                             <button
                                                 onClick={() => handleRemoveCV(cv.name)}
-                                                className="bg-red-500 text-white px-2 py-1 rounded"
+                                                className="bg-red-500 text-white px-2 py-1 rounded border-2 border-transparent hover:bg-red-400 hover:border-red-400 active:bg-transparent active:text-red-500 active:border-red-500"
                                             >
                                                 Remove
                                             </button>

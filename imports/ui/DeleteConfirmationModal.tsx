@@ -12,10 +12,16 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({ onCon
                 <h2 className="text-2xl mb-4">Confirm Delete</h2>
                 <p className="mb-4">Are you sure you want to delete this job application?</p>
                 <div className="flex justify-end">
-                    <button onClick={onCancel} className="bg-gray-500 text-white px-4 py-2 rounded mr-2">
+                    <button
+                        onClick={onCancel}
+                        className="bg-gray-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-gray-400 hover:border-gray-400 active:bg-transparent active:text-gray-500 active:border-gray-500 mr-2"
+                    >
                         Cancel
                     </button>
-                    <button onClick={onConfirm} className="bg-red-500 text-white px-4 py-2 rounded">
+                    <button
+                        onClick={onConfirm}
+                        className="bg-red-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-red-400 hover:border-red-400 active:bg-transparent active:text-red-500 active:border-red-500"
+                    >
                         Delete
                     </button>
                 </div>

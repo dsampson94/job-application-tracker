@@ -116,12 +116,14 @@ const InsightsModal: React.FC<InsightsModalProps> = ({ jobApplication, onClose }
                         </div>
                         <div className="space-y-2">
                             <h3 className="text-lg font-semibold whitespace-nowrap">CV: {jobApplication?.cvName || 'N/A'}</h3>
-                            <h3 className="text-lg font-semibold whitespace-nowrap">Job
-                                Spec: {jobApplication?.jobSpecName || 'N/A'}</h3>
+                            <h3 className="text-lg font-semibold whitespace-nowrap">Job Spec: {jobApplication?.jobSpecName || 'N/A'}</h3>
                         </div>
                     </div>
                     <div className="flex justify-end items-start">
-                        <button onClick={onClose} className="bg-gray-500 text-white px-4 py-2 rounded">
+                        <button
+                            onClick={onClose}
+                            className="bg-gray-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-gray-400 hover:border-gray-400 active:bg-transparent active:text-gray-500 active:border-gray-500"
+                        >
                             Close
                         </button>
                     </div>
@@ -141,8 +143,7 @@ const InsightsModal: React.FC<InsightsModalProps> = ({ jobApplication, onClose }
                         </button>
                     ))}
                 </div>
-                <div ref={responseContainerRef}
-                     className="flex-grow overflow-y-auto bg-gray-100 p-4 rounded grid grid-cols-2 gap-4">
+                <div ref={responseContainerRef} className="flex-grow overflow-y-auto bg-gray-100 p-4 rounded grid grid-cols-2 gap-4">
                     <div className="space-y-4">
                         <h4 className="text-xl font-semibold mb-2">Saved Responses:</h4>
                         {responses.map((response, index) => (
@@ -150,7 +151,7 @@ const InsightsModal: React.FC<InsightsModalProps> = ({ jobApplication, onClose }
                                 <pre className="whitespace-pre-wrap">{response}</pre>
                                 <button
                                     onClick={() => handleRemoveResponse(index)}
-                                    className="absolute top-0 right-0 pb-1 mr-2 mt-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                    className="absolute top-0 right-0 pb-1 mr-2 mt-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center border-2 border-transparent hover:bg-red-400 hover:border-red-400 active:bg-transparent active:text-red-500 active:border-red-500"
                                 >
                                     &times;
                                 </button>
@@ -177,7 +178,7 @@ const InsightsModal: React.FC<InsightsModalProps> = ({ jobApplication, onClose }
                                     </pre>
                                     <button
                                         onClick={handleAddResponse}
-                                        className="absolute top-0 right-0 pb-1 mt-2 mr-2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                        className="absolute top-0 right-0 pb-1 mt-2 mr-2 bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center border-2 border-transparent hover:bg-green-400 hover:border-green-400 active:bg-transparent active:text-green-500 active:border-green-500"
                                     >
                                         +
                                     </button>
@@ -189,7 +190,7 @@ const InsightsModal: React.FC<InsightsModalProps> = ({ jobApplication, onClose }
                 <div className="flex justify-center mt-4">
                     <button
                         onClick={() => fetchInsights(requestType)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        className="bg-blue-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-blue-400 hover:border-blue-400 active:bg-transparent active:text-blue-500 active:border-blue-500"
                     >
                         Get Insights
                     </button>

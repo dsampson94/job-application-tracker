@@ -114,19 +114,19 @@ const JobApplicationsTable: React.FC<JobApplicationsTableProps> = ({ onOpenModal
                                     <div className="flex items-center justify-center space-x-2">
                                         <button
                                             onClick={() => handleOpenInsightsModal(jobApplication)}
-                                            className="bg-green-500 text-white px-4 py-2 rounded"
+                                            className="bg-green-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-green-400 hover:border-green-400 active:bg-transparent active:text-green-500 active:border-green-500"
                                         >
                                             Insights
                                         </button>
                                         <button
                                             onClick={() => onOpenModal(jobApplication)}
-                                            className="bg-yellow-500 text-white px-4 py-2 rounded"
+                                            className="bg-yellow-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-yellow-400 hover:border-yellow-400 active:bg-transparent active:text-yellow-500 active:border-yellow-500"
                                         >
                                             View
                                         </button>
                                         <button
                                             onClick={() => handleOpenDeleteModal(jobApplication)}
-                                            className="bg-red-500 text-white px-4 py-2 rounded"
+                                            className="bg-red-500 text-white px-4 py-2 rounded border-2 border-transparent hover:bg-red-400 hover:border-red-400 active:bg-transparent active:text-red-500 active:border-red-500"
                                         >
                                             Delete
                                         </button>
